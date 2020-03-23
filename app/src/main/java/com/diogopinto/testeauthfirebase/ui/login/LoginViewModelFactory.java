@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
  * Required given LoginViewModel has a non-empty constructor
  */
 public class LoginViewModelFactory implements ViewModelProvider.Factory {
-    
+
     @NonNull
     @Override
     @SuppressWarnings("unchecked")

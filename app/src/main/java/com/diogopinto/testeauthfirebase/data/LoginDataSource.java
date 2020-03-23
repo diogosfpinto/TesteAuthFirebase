@@ -23,7 +23,7 @@ public class LoginDataSource {
         this.usuario = usuario;
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<LoggedInUser> login(final String username, final String password) {
 
         try {
             usuario.signInWithEmailAndPassword(username, password)
@@ -35,8 +35,26 @@ public class LoginDataSource {
                                 result = new Result.Success<>(new LoggedInUser(usuario.getCurrentUser().getUid(),
                                         usuario.getCurrentUser().getEmail()));
                             } else {
-                                Log.i("SignIn", "Falha ao logar usuário.");
-                                result = new Result.Error(new IOException("Falha ao logar usuário"));
+//                              Registrar e-mail digitado no Firebase caso ocorra falha no login
+                                usuario.createUserWithEmailAndPassword(username, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()){
+                                                    Log.i("SignIn",
+                                                            "Sucesso ao cadastrar usuário");
+                                                    result = new Result.Success<>(
+                                                            new LoggedInUser(usuario.getCurrentUser().getUid(),
+                                                                    usuario.getCurrentUser().getEmail()));
+                                                } else {
+                                                    Log.i("SignIn", "Erro ao cadastrar usuário");
+                                                    result = new Result.Error
+                                                            (new IOException("Falha ao cadastrar usuário"));
+                                                }
+                                            }
+                                        });
+
+
                             }
                         }
                     });
