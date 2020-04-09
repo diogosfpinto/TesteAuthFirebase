@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Patterns;
 
+import com.diogopinto.testeauthfirebase.PrincipalActivity;
 import com.diogopinto.testeauthfirebase.data.LoginRepository;
 import com.diogopinto.testeauthfirebase.data.Result;
 import com.diogopinto.testeauthfirebase.data.model.LoggedInUser;
@@ -29,16 +32,26 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
+    public Intent login(Context ctx, String username, String password) {
+
+        Intent intent = new Intent(ctx, LoginActivity.class);
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            intent = new Intent(ctx, PrincipalActivity.class);
+
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }
+        return intent;
+    }//login
+
+    public Intent logout(Context ctx){
+        loginRepository.logout();
+        return new Intent(ctx, LoginActivity.class);
     }
 
     public void loginDataChanged(String username, String password) {

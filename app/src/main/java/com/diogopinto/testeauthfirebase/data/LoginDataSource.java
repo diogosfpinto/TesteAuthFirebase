@@ -19,6 +19,9 @@ public class LoginDataSource {
 
     private FirebaseAuth usuario;
     private Result result;
+
+    /**
+     * Construtor que recebe instancia de usuário do Firebase*/
     public LoginDataSource(FirebaseAuth usuario) {
         this.usuario = usuario;
     }
