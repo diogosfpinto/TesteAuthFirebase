@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,9 +24,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.diogopinto.testeauthfirebase.PrincipalActivity;
 import com.diogopinto.testeauthfirebase.R;
 import com.diogopinto.testeauthfirebase.ui.login.LoginViewModel;
 import com.diogopinto.testeauthfirebase.ui.login.LoginViewModelFactory;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,8 +38,16 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
+
+        if (loginViewModel.isUserConnected() == true){
+            startActivity(new Intent(getApplicationContext(), PrincipalActivity.class));
+            finish();
+        }
 
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
@@ -116,8 +127,14 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 startActivity(loginViewModel.login(getApplicationContext(), usernameEditText.getText().toString(),
                         passwordEditText.getText().toString()));
+                finish();
             }
         });
+    }//onCreate
+
+    @Override
+    public void onStart(){
+        super.onStart();
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

@@ -13,6 +13,7 @@ import com.diogopinto.testeauthfirebase.data.LoginRepository;
 import com.diogopinto.testeauthfirebase.data.Result;
 import com.diogopinto.testeauthfirebase.data.model.LoggedInUser;
 import com.diogopinto.testeauthfirebase.R;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginViewModel extends ViewModel {
 
@@ -79,5 +80,9 @@ public class LoginViewModel extends ViewModel {
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
+    }
+
+    public boolean isUserConnected() {
+        return loginRepository.isLoggedIn();
     }
 }

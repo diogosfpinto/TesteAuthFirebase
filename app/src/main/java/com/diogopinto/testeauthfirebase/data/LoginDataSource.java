@@ -62,15 +62,23 @@ public class LoginDataSource {
                         }
                     });
 
-//            Verifica usuário logado
-            if (usuario.getCurrentUser() != null){
-                Log.i("SignIn", "usuario logado: " + usuario.getCurrentUser().getEmail());
-            }
-
             return result;
+
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
+    }//login
+
+//            Verifica usuário logado
+    public boolean getCurrentUser(){
+        boolean currentUser;
+        if (usuario.getCurrentUser() != null){
+            currentUser = true;
+            Log.i("SignIn", "usuario logado: " + usuario.getCurrentUser().getEmail());
+        } else {
+            currentUser = false;
+        }
+        return currentUser;
     }
 
     public void logout() {

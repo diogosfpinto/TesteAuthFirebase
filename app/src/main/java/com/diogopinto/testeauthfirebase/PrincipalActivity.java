@@ -52,6 +52,7 @@ public class PrincipalActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.sair:
                 startActivity(loginViewModel.logout(getApplicationContext()));
+                finish();
                 break;
 
         }

@@ -30,7 +30,7 @@ public class LoginRepository {
     }
 
     public boolean isLoggedIn() {
-        return user != null;
+        return dataSource.getCurrentUser();
     }
 
     public void logout() {
